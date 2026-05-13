@@ -1,15 +1,137 @@
-# nature-skills 
-| Overview | Community |
-| :--- | :---: |
-| **Welcome! Let's co-create nature-skills.**<br><br>A growing collection of Claude skills for producing academic work at *Nature*-journal standard.<br><br>Currently covering scientific figures, manuscript prose, data availability, and paper-to-presentation workflows; future releases may add related tasks such as statistical reporting, peer‑review responses, and methods writing.<br><br>**Our philosophy** — Every skill in this collection shares a common philosophy: rules are derived from **primary sources** (published *Nature* papers, journal author guidelines, and structured writing curricula), not from general style intuition. | <img width="200" src="https://github.com/user-attachments/assets/c7e93192-5a45-49dd-82b9-8a5fe90b8025" /><br><br>*The group is currently full. Please contact the administrator if you’d like to join.* |
+# nature-skills
+大家好，我是上海交通大学博士生袁一哲，目前主要从事医疗 AI 相关的研究与创业实践。欢迎大家持续关注 nature-skill。如果你有任何需求，欢迎提交 issue；如果我们认为该需求有意义且可行，也会尽量推进实现。我们同样欢迎 PR，但请务必按照 README 后面说明的格式提交，以便我们更高效地审核与合并。
+
+Hello everyone, I’m Yuan Yizhe, a PhD student at Shanghai Jiao Tong University. I’m currently working on research and entrepreneurial projects in medical AI. Thank you for your continued interest in nature-skill. If you have any requests, feel free to open an issue. If we find the request meaningful and feasible, we’ll do our best to implement it. We also welcome PRs, but please make sure to follow the submission format described later in the README so that we can review and merge them more efficiently.
+
+## 📢 课题组诚招“医学 + AI”实习生
+
+<table border="0" cellpadding="10" cellspacing="0">
+  <tr>
+    <td width="34%" valign="top" align="center" style="border: none; background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
+      <span style="font-size: 14px; color: #666;">微信群聊</span><br>
+      <img src="https://github.com/user-attachments/assets/7a5daff1-2e82-42fd-87ab-1165f46242d9" width="100%" style="max-width:160px; margin-top:15px; border: 1px solid #eee;">
+      <div style="margin-top:10px; font-size: 13px; color: #666;">答疑交流群！进群记得12小时内备注</div>
+    </td>
+    <td width="66%" valign="top" style="border: none; line-height: 1.6;">
+      还在寻找能够落地的 <strong>AI 前沿交叉赛道</strong>吗？我们课题组现向对“医学 + AI”充满热情的你发出邀请！<br><br>
+      这里有充足的计算资源，以及深耕医疗大模型（LLM）、视觉预训练、Prompt Engineering 及自动化医疗 AI Agent 的科研团队。我们更看重你的<strong>自驱力、学习能力与科研产出追求</strong>。<br><br>
+      项目信息文档链接：https://iigqjt2m4ia.feishu.cn/wiki/VIvDwHu18iTc6mk411xco8chnJb   密码：664#N926<br>
+      如果你有相关代码基础或项目经验，渴望在顶级交叉学科中积累成果，请将简历发送至：<br>
+      📧 <strong><a href="mailto:sjtu520aimedws@163.com" style="text-decoration: none; color: #0056b3;">sjtu520aimedws@163.com</a></strong><br>
+      <small>（标题格式：姓名-专业-医学AI科研申请）</small><br><br>
+      期待与你在 AI 赋能医疗的征途中，做出最扎实的科研工作！
+    </td>
+  </tr>
+</table>
 
 ---
+
+## Installation
+
+`nature-skills` is a repository of reusable instruction bundles centred on `SKILL.md`.
+Each top-level `nature-*` directory is one installable unit. The exact installation method
+depends on which coding agent you use.
+
+### 1. Codex
+
+Codex can use these folders directly as local skills.
+
+**Clone the repo**
+
+```bash
+git clone https://github.com/Yuan1z0825/nature-skills.git
+cd nature-skills
+```
+
+**Install one skill**
+
+```bash
+mkdir -p ~/.codex/skills
+cp -R nature-reader ~/.codex/skills/
+```
+
+**Install all current skills**
+
+```bash
+mkdir -p ~/.codex/skills
+for d in nature-*; do
+  cp -R "$d" ~/.codex/skills/
+done
+```
+
+**Finish**
+
+- Restart Codex so newly added skills are picked up.
+- Then ask naturally, for example: `Translate this paper into a full markdown reader.` or
+  `Make this paper into a Chinese journal-club PPT.`
+
+If you prefer not to use the terminal, copying the `nature-*` folder(s) into
+`~/.codex/skills/` manually works as well.
+
+### 2. Claude Code
+
+Claude Code does **not** currently load Codex-style `SKILL.md` folders as native skills.
+Its closest reusable primitives are:
+
+- **Subagents**: `~/.claude/agents/` or `.claude/agents/`
+- **Custom slash commands**: `~/.claude/commands/` or `.claude/commands/`
+
+The recommended approach is to convert a skill into a **subagent**.
+
+**Create a user-level subagent**
+
+```bash
+mkdir -p ~/.claude/agents
+cp nature-reader/SKILL.md ~/.claude/agents/nature-reader.md
+```
+
+Then open `~/.claude/agents/nature-reader.md` and make sure the frontmatter is valid
+for Claude Code subagents:
+
+```yaml
+---
+name: nature-reader
+description: Full-paper bilingual, figure-aware, source-grounded Markdown reader for journal or conference papers. Use proactively when the user asks to translate an entire paper or generate a complete markdown reader.
+---
+```
+
+After that, start a new Claude Code session or open `/agents`, and invoke it naturally or explicitly:
+
+```text
+Use the nature-reader subagent to turn this PDF into a full markdown reader.
+```
+
+If you prefer commands instead of subagents, create a project or user command under
+`.claude/commands/` or `~/.claude/commands/` and paste or adapt the corresponding
+`SKILL.md` content there.
+
+Official Claude Code docs:
+
+- [Subagents](https://docs.anthropic.com/en/docs/claude-code/sub-agents)
+- [Slash commands](https://docs.anthropic.com/en/docs/claude-code/slash-commands)
+
+### 3. Other agents or manual use
+
+If your agent supports reusable prompt files, system prompts, or agent profiles, the minimum
+portable unit is the skill directory itself:
+
+```text
+nature-<topic>/
+├── README.md
+├── SKILL.md
+└── references/...
+```
+
+In that case:
+
+1. Copy the whole skill directory into your prompt library or project.
+2. Preserve `SKILL.md` and any `references/` files together.
+3. Adapt the frontmatter and body to the target agent's native format if needed.
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Yuan1z0825/nature-skills&type=Date&cache_bust=2026-05-08T06)](https://star-history.com/#Yuan1z0825/nature-skills&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Yuan1z0825/nature-skills&type=Date&cache_bust=2026-05-13T07)](https://star-history.com/#Yuan1z0825/nature-skills&Date)
 
----
 
 ## Skill index
 
@@ -19,6 +141,7 @@
 | [`nature-polishing`](skills/nature-polishing/README.md) | Stable | Academic prose polishing to *Nature* style | "Nature style", "polish", "academic writing" |
 | [`nature-citation`](skills/nature-citation/README.md) | Beta | Strict Nature / CNS-family citation retrieval with ENW, RIS, and Zotero RDF export | "Nature citation", "CNS citation", "text citation", "supporting references", "Zotero RDF" |
 | [`nature-data`](skills/nature-data/README.md) | Draft | Nature Data Availability statements, repository plans, and FAIR checks | "Data Availability", "repository", "FAIR metadata", "data availability statement" |
+| [`nature-reader`](skills/nature-reader/README.md) | Beta | Full-paper bilingual Markdown reader with source anchors and figure grounding | "nature reader", "full markdown", "paper md", "原文对照", "图文对应", "全文翻译" |
 | [`nature-response`](skills/nature-response/README.md) | Beta | Point-by-point reviewer response letters with comment triage, action mapping, and risk checks | "response to reviewers", "rebuttal letter", "major revision", "审稿意见回复" |
 | [`nature-paper2ppt`](skills/nature-paper2ppt/README.md) | Beta | Chinese PPTX decks from scientific papers | "paper PPT", "journal club", "paper to slides", "paper presentation" |
 
