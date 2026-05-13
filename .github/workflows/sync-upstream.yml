@@ -1,0 +1,42 @@
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: "0 6 * * 0"  # every Sunday at 6:00 UTC
+  workflow_dispatch:       # allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/Yuan1z0825/nature-skills.git
+          git fetch upstream
+
+      - name: Merge upstream changes
+        run: |
+          if git merge-base --is-ancestor upstream/main HEAD; then
+            echo "Already up to date with upstream."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git merge --no-ff upstream/main -m "chore: sync upstream changes"
+
+      - name: Push to origin
+        run: |
+          if git diff --quiet HEAD @{upstream} 2>/dev/null; then
+            echo "No new changes to push."
+            exit 0
+          fi
+          git push
