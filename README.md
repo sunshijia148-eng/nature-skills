@@ -9,7 +9,7 @@ Hello everyone, I’m Yuan Yizhe, a PhD student at Shanghai Jiao Tong University
   <tr>
     <td width="34%" valign="top" align="center" style="border: none; background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
       <span style="font-size: 14px; color: #666;">微信群聊</span><br>
-      <img src="https://github.com/user-attachments/assets/7a5daff1-2e82-42fd-87ab-1165f46242d9" width="100%" style="max-width:160px; margin-top:15px; border: 1px solid #eee;">
+      <img src="https://github.com/user-attachments/assets/67d15f2d-13fc-44a9-a0c3-0af534b05c02" width="100%" style="max-width:160px; margin-top:15px; border: 1px solid #eee;">
       <div style="margin-top:10px; font-size: 13px; color: #666;">答疑交流群！进群记得12小时内备注</div>
     </td>
     <td width="66%" valign="top" style="border: none; line-height: 1.6;">
@@ -29,12 +29,13 @@ Hello everyone, I’m Yuan Yizhe, a PhD student at Shanghai Jiao Tong University
 ## Installation
 
 `nature-skills` is a repository of reusable instruction bundles centred on `SKILL.md`.
-Each top-level `nature-*` directory is one installable unit. The exact installation method
-depends on which coding agent you use.
+Each `skills/nature-*` directory is one installable unit. Copy the whole folder, not
+only `SKILL.md`, because many skills depend on `references/`, assets, scripts, or
+README context.
 
 ### 1. Codex
 
-Codex can use these folders directly as local skills.
+Codex can use these folders directly as local skills. This is the simplest installation path.
 
 **Clone the repo**
 
@@ -47,14 +48,23 @@ cd nature-skills
 
 ```bash
 mkdir -p ~/.codex/skills
-cp -R nature-reader ~/.codex/skills/
+cp -R skills/nature-reader ~/.codex/skills/
 ```
 
 **Install all current skills**
 
 ```bash
 mkdir -p ~/.codex/skills
-for d in nature-*; do
+for d in skills/nature-*; do
+  cp -R "$d" ~/.codex/skills/
+done
+```
+
+**Update after pulling new changes**
+
+```bash
+git pull
+for d in skills/nature-*; do
   cp -R "$d" ~/.codex/skills/
 done
 ```
@@ -65,24 +75,36 @@ done
 - Then ask naturally, for example: `Translate this paper into a full markdown reader.` or
   `Make this paper into a Chinese journal-club PPT.`
 
-If you prefer not to use the terminal, copying the `nature-*` folder(s) into
-`~/.codex/skills/` manually works as well.
+If you prefer not to use the terminal, copying the `skills/nature-*` folder(s) into
+`~/.codex/skills/` manually works as well. For a longer walkthrough, see
+[`install.md`](install.md).
 
 ### 2. Claude Code
 
-Claude Code does **not** currently load Codex-style `SKILL.md` folders as native skills.
-Its closest reusable primitives are:
+**Primary method: Plugin marketplace installation**
 
-- **Subagents**: `~/.claude/agents/` or `.claude/agents/`
-- **Custom slash commands**: `~/.claude/commands/` or `.claude/commands/`
+This repository is published as a Claude Code plugin, making installation simple.
 
-The recommended approach is to convert a skill into a **subagent**.
+```bash
+# Add the marketplace (one-time)
+/plugin marketplace add https://github.com/Yuan1z0825/nature-skills
 
-**Create a user-level subagent**
+# Install the plugin
+/plugin install nature-skills
+
+# Reload to apply
+/reload-plugins
+```
+
+All nine skills are available automatically after reload. No manual wrapper setup needed.
+
+**Alternative: subagent wrapper**
+
+If you prefer manual control over individual skills, create a user-level subagent:
 
 ```bash
 mkdir -p ~/.claude/agents
-cp nature-reader/SKILL.md ~/.claude/agents/nature-reader.md
+cp skills/nature-reader/SKILL.md ~/.claude/agents/nature-reader.md
 ```
 
 Then open `~/.claude/agents/nature-reader.md` and make sure the frontmatter is valid
@@ -116,7 +138,7 @@ If your agent supports reusable prompt files, system prompts, or agent profiles,
 portable unit is the skill directory itself:
 
 ```text
-nature-<topic>/
+skills/nature-<topic>/
 ├── README.md
 ├── SKILL.md
 └── references/...
@@ -137,13 +159,15 @@ In that case:
 
 | Skill | Status | Purpose | Trigger keywords |
 |-------|--------|---------|-----------------|
-| [`nature-figure`](skills/nature-figure/README.md) | Stable | Publication-ready matplotlib figures | "Nature figure", "publication plot", "scientific figure" |
+| [`nature-figure`](skills/nature-figure/README.md) | Stable | Nature/high-impact Python or R figure workflow with bundled figures4papers demos | "Nature figure", "publication plot", "scientific figure", "figures4papers" |
 | [`nature-polishing`](skills/nature-polishing/README.md) | Stable | Academic prose polishing to *Nature* style | "Nature style", "polish", "academic writing" |
+| [`nature-writing`](skills/nature-writing/README.md) | Draft | Nature-style manuscript section drafting and argument restructuring | "Nature writing", "write abstract", "write introduction", "manuscript draft" |
 | [`nature-citation`](skills/nature-citation/README.md) | Beta | Strict Nature / CNS-family citation retrieval with ENW, RIS, and Zotero RDF export | "Nature citation", "CNS citation", "text citation", "supporting references", "Zotero RDF" |
 | [`nature-data`](skills/nature-data/README.md) | Draft | Nature Data Availability statements, repository plans, and FAIR checks | "Data Availability", "repository", "FAIR metadata", "data availability statement" |
 | [`nature-reader`](skills/nature-reader/README.md) | Beta | Full-paper bilingual Markdown reader with source anchors and figure grounding | "nature reader", "full markdown", "paper md", "原文对照", "图文对应", "全文翻译" |
 | [`nature-response`](skills/nature-response/README.md) | Beta | Point-by-point reviewer response letters with comment triage, action mapping, and risk checks | "response to reviewers", "rebuttal letter", "major revision", "审稿意见回复" |
 | [`nature-paper2ppt`](skills/nature-paper2ppt/README.md) | Beta | Chinese PPTX decks from scientific papers | "paper PPT", "journal club", "paper to slides", "paper presentation" |
+| [`nature-academic-search`](skills/nature-academic-search/README.md) | Beta | Multi-source literature search, citation verification, and reference management | "search papers", "find articles", "academic search", "literature search", "verify DOI" |
 
 > **Adding a new skill?** Follow the [contribution guide](#adding-a-new-skill) at the bottom of this file.
 
@@ -170,6 +194,9 @@ layouts.
 
 **Built from** — Production scripts from papers published in *Nature Machine Intelligence*
 and top ML/bioinformatics venues ([figures4papers](https://github.com/ChenLiu-1996/figures4papers)).
+The figures4papers demo scripts and preview assets are bundled inside
+`skills/nature-figure/assets/figures4papers/`, with a routing guide at
+`skills/nature-figure/references/demos.md`.
 
 **Key rules enforced**
 
@@ -193,7 +220,8 @@ skills/nature-figure/
     ├── design-theory.md  Typography, layout, export policy, anti-redundancy rules
     ├── common-patterns.md Ultra-wide panels, legend axes, print-safe bars
     ├── tutorials.md      End-to-end walkthroughs (bars, trends, heatmaps)
-    └── chart-types.md    Radar, 3D sphere, scatter, fill_between, log-scale
+    ├── chart-types.md    Radar, 3D sphere, scatter, fill_between, log-scale
+    └── demos.md          Bundled figures4papers scripts and preview routing
 ```
 
 **Supported chart types** — Stacked bar, grouped bar, horizontal ablation bar, trend/line,
@@ -208,9 +236,9 @@ illustration, fill-between area, log-scale bar, GridSpec multi-panel.
 into prose matching *Nature* journal conventions: ≤ 30-word sentences, section-aware
 tense and hedging, precise vocabulary, correct citation practice, and British English.
 
-**Built from** — Close reading of five *Nature* s41586 papers (2026) and a graduate-level
-scientific English writing course; 25 rules extracted across sentence architecture,
-paper structure, vocabulary, citation integrity, house style, and AI ethics.
+**Built from** — A graduate-level scientific English writing course, Academic Phrasebank,
+and close reading of curated *Nature* and *Nature Communications* research articles
+across materials, energy systems, construction decarbonization and machine learning.
 
 **Key rules enforced**
 
@@ -234,7 +262,65 @@ Proofreading → Plain-text output
 ```
 skills/nature-polishing/
 ├── README.md
-└── SKILL.md    25 rules + 12-step workflow (loaded by Claude automatically)
+├── SKILL.md
+└── references/
+    ├── published-article-patterns.md
+    ├── phrasebank-playbook.md
+    ├── section-moves.md
+    ├── style-guardrails.md
+    └── writing-strategy.md
+```
+
+---
+
+## nature-writing
+
+**What it does** — Drafts or rebuilds manuscript sections from author-provided
+claims, results, figures, notes, or Chinese drafts. It is for argument construction:
+abstracts, introductions, Results narratives, Discussions, Conclusions, titles and
+full manuscript outlines, method sections, experiment sections and reviewer-facing
+self-review.
+
+**Built from** — Close reading of curated *Nature* and *Nature Communications*
+articles, especially how published papers move from field-scale stakes to a narrow
+gap, then to evidence, interpretation and bounded implication. It also integrates
+open research-writing notes for paragraph flow, section logic and adversarial
+paper review.
+
+**Key rules enforced**
+
+| Domain | Core rule |
+|--------|-----------|
+| Evidence first | Do not invent data, mechanisms, references, statistics, novelty or limitations |
+| Abstract | Context/problem → gap → approach → key result → implication → boundary |
+| Introduction | Field scale → bottleneck → prior attempts → unresolved gap → present study |
+| Method | Module motivation → module design → forward process → technical advantage |
+| Results | Build an evidence ladder, not a chronological lab diary |
+| Experiments | Tie claims to baselines, ablations, metrics, stress tests and readable tables |
+| Discussion | Explain meaning, relation to prior work, constraints and future use |
+| Review | Run claim-evidence and rejection-risk checks before submission |
+| Chinese notes | Translate intent and argument, not clause order |
+
+**Reference files**
+
+```
+skills/nature-writing/
+├── README.md
+├── SKILL.md
+├── agents/
+│   └── openai.yaml
+└── references/
+    ├── abstract.md
+    ├── article-architecture.md
+    ├── chinese-author-workflow.md
+    ├── conclusion.md
+    ├── experiments.md
+    ├── introduction.md
+    ├── method.md
+    ├── paper-review.md
+    ├── paragraph-flow.md
+    ├── related-work.md
+    └── examples/
 ```
 
 ---
@@ -406,6 +492,80 @@ skills/nature-paper2ppt/
 
 ---
 
+## nature-academic-search
+
+**What it does** — Provides a multi-source academic search and reference-management
+workflow backed by a local MCP server. It searches PubMed, CrossRef and arXiv in
+parallel, fetches records by DOI, PMID or arXiv ID, formats citations, looks up MeSH
+terms, verifies bibliographic identifiers, and supports `.nbib`, `.ris`, `.bib` and
+`.enw` reference-file workflows.
+
+**Built from** — A unified MCP server with source adapters for PubMed E-utilities,
+CrossRef REST metadata and arXiv Atom metadata, plus reusable workflow notes for
+source-tier routing, search strategy, citation parsing, deduplication, RIS/BibTeX
+field mapping and reference-file conversion.
+
+**Setup note** — For Claude Code MCP use, run
+`bash skills/nature-academic-search/install.sh your-email@example.com`, restart Claude Code,
+and optionally set `NCBI_API_KEY` for higher PubMed rate limits. For plain prompt use,
+copy the whole `skills/nature-academic-search/` directory like the other skills.
+
+**Key rules enforced**
+
+| Domain | Core rule |
+|--------|-----------|
+| Source routing | Start with structured API-backed sources: PubMed for biomedical searches, CrossRef for DOI and cross-disciplinary metadata, and arXiv for preprints |
+| Fallback discipline | Escalate from T1 sources to limited APIs or scraped/manual sources only when needed, and warn when results may be incomplete |
+| Deduplication | Merge multi-source hits by DOI, PMID, arXiv ID and normalized title rather than counting duplicate records as separate evidence |
+| Citation verification | Resolve DOI, PMID and arXiv IDs before citation formatting; expose missing or failed metadata instead of filling fields by guesswork |
+| MeSH strategy | Use MeSH lookup for biomedical PubMed queries when the task needs recall, controlled vocabulary or systematic search structure |
+| File integrity | Preserve bibliographic fields when converting `.nbib`, `.ris`, `.bib` and `.enw`; do not fabricate volume, issue, pages, DOI or PMID values |
+
+**MCP tools**
+
+| Tool | Purpose |
+|------|---------|
+| `search_papers` | Search CrossRef, PubMed and arXiv with optional source selection and per-source result limits |
+| `get_paper_by_id` | Fetch paper metadata by DOI, PMID or arXiv ID with automatic ID-type detection |
+| `get_citation` | Generate formatted citations in styles such as APA, Nature, IEEE, Vancouver, Chicago and MLA |
+| `lookup_mesh` | Query PubMed MeSH descriptors for biomedical search-term expansion |
+
+**Reference files**
+
+```text
+skills/nature-academic-search/
+├── README.md
+├── SKILL.md
+├── install.sh
+├── config/
+│   ├── mcp-snippet.json
+│   ├── settings-snippet.json
+│   └── triggers-academic-search.toml
+├── mcp-server/
+│   ├── academic_search_server.py
+│   ├── sources/
+│   ├── tests/
+│   └── utils/
+├── references/
+│   ├── citation-parser.md
+│   ├── dedup-engine.md
+│   ├── ris-bibtex-format.md
+│   ├── search-strategy.md
+│   ├── source-tiers.md
+│   └── workflows/
+└── scripts/
+    ├── converters.py
+    ├── format-converter.py
+    └── preflight.py
+```
+
+**Example workflow** — Search the same topic across PubMed, CrossRef and arXiv, merge
+and deduplicate candidate papers, verify key identifiers, look up MeSH terms for the
+biomedical subset, then export or convert the selected references for Zotero, EndNote
+or BibTeX.
+
+---
+
 ## Shared design principles
 
 All skills in this collection adhere to the following:
@@ -428,7 +588,7 @@ To add a skill to this collection:
 
 **1. Create a directory**
 ```
-nature-<topic>/
+skills/nature-<topic>/
 ```
 
 **2. Minimum required files**
@@ -453,7 +613,7 @@ description: >-
 
 Add a row to the [Skill index](#skill-index) table above:
 ```markdown
-| [`nature-<topic>`](nature-<topic>/README.md) | Draft / Stable | One-line purpose | trigger keywords |
+| [`nature-<topic>`](skills/nature-<topic>/README.md) | Draft / Stable | One-line purpose | trigger keywords |
 ```
 
 **5. Status labels**
