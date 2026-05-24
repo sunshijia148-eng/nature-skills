@@ -4,12 +4,11 @@
 Hello everyone, I’m Yuan Yizhe, a PhD student at Shanghai Jiao Tong University. I’m currently working on research and entrepreneurial projects in medical AI. Thank you for your continued interest in nature-skill. If you have any requests, feel free to open an issue. If we find the request meaningful and feasible, we’ll do our best to implement it. We also welcome PRs, but please make sure to follow the submission format described later in the README so that we can review and merge them more efficiently.
 
 ## 📢 课题组诚招“医学 + AI”实习生
-
 <table border="0" cellpadding="10" cellspacing="0">
   <tr>
     <td width="34%" valign="top" align="center" style="border: none; background-color: #f9f9f9; padding: 20px; border-radius: 8px;">
       <span style="font-size: 14px; color: #666;">微信群聊</span><br>
-      <img src="https://github.com/user-attachments/assets/67d15f2d-13fc-44a9-a0c3-0af534b05c02" width="100%" style="max-width:160px; margin-top:15px; border: 1px solid #eee;">
+      <img src="https://github.com/user-attachments/assets/b5c8a2f1-9b80-4b2b-b606-961c79d513da" width="100%" style="max-width:160px; margin-top:15px; border: 1px solid #eee;">
       <div style="margin-top:10px; font-size: 13px; color: #666;">答疑交流群！进群记得12小时内备注</div>
     </td>
     <td width="66%" valign="top" style="border: none; line-height: 1.6;">
@@ -636,3 +635,33 @@ The following are documented gaps. Contributions welcome.
 | `nature-methods` | Deep-dive Methods writing assistant — reproducibility checklist, forbidden phrases, ethical approval templates, supplementary organisation | Medium |
 | `nature-cover` | Cover letter drafting — hook paragraph, significance framing, fit-to-journal argument, ≤ 500-word limit | Medium |
 | `nature-review` | Writing a literature review or review article in *Nature Reviews* style — synthesis vs. summary, argument-led structure | Low |
+
+
+
+## ☕ 如果内容对你有帮助，欢迎随缘支持一下
+
+---
+
+<div align="center">
+
+| 微信赞赏 | 来自粉丝的小感动 |
+| --- | --- |
+| <img width="320" alt="微信赞赏" src="https://github.com/user-attachments/assets/83c101e7-2370-46e9-a840-cb506df98cf4" /> | <img width="320" alt="粉丝的鼓励" src="https://github.com/user-attachments/assets/0484300a-95e8-4cb3-ad73-478ba9bd19d6" /> |
+
+</div>
+
+### 💬 想说的话
+ 
+项目会长期免费维护，大家正常使用就好。  
+很多朋友还是学生党，所以完全不需要有任何“必须打赏”的压力。
+
+如果这些内容刚好帮你节省了一些时间、解决了一点问题，  
+又恰好想请作者喝杯咖啡，那我会非常开心 ☕  
+
+你的支持会用于：
+
+- 持续更新内容
+- 服务器与工具费用
+- 熬夜写文档时的续命奶茶（认真）
+
+无论是否赞赏，都非常感谢你的关注与支持 ❤️
